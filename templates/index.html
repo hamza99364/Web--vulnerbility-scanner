@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Vulnerability Scanner</title>
+</head>
+<body>
+    <h1>Web Application Vulnerability Scanner</h1>
+    <p>Enter a URL to scan for vulnerabilities.</p>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" action="/scan">
+        <label>Target URL:</label><br>
+        <input type="text" name="url" placeholder="http://example.com" size="50"><br><br>
+        <input type="checkbox" name="disclaimer">
+        I confirm I have permission to scan this target.<br><br>
+        <input type="submit" value="Start Scan">
+    </form>
+
+    <br>
+    <a href="/history">View Scan History</a>
+</body>
+</html>

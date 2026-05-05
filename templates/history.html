@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scan History</title>
+</head>
+<body>
+    <h1>Scan History</h1>
+
+    {% if scans %}
+        <table border="1" cellpadding="8">
+            <tr>
+                <th>ID</th>
+                <th>Target URL</th>
+                <th>Date</th>
+                <th>Issues Found</th>
+            </tr>
+            {% for scan in scans %}
+            <tr>
+                <td>{{ scan[0] }}</td>
+                <td>{{ scan[1] }}</td>
+                <td>{{ scan[2] }}</td>
+                <td>{{ scan[3] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No scans yet.</p>
+    {% endif %}
+
+    <br>
+    <a href="/">Back to Scanner</a>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scan Results</title>
+</head>
+<body>
+    <h1>Scan Results</h1>
+    <p>Target: {{ url }}</p>
+    <p>Total Issues Found: {{ count }}</p>
+
+    {% if results %}
+        <table border="1" cellpadding="8">
+            <tr>
+                <th>Type</th>
+                <th>Severity</th>
+                <th>Description</th>
+            </tr>
+            {% for r in results %}
+            <tr>
+                <td>{{ r.type }}</td>
+                <td>{{ r.severity }}</td>
+                <td>{{ r.description }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p style="color:green;">No vulnerabilities found!</p>
+    {% endif %}
+
+    <br>
+    <a href="/">Scan Another URL</a> |
+    <a href="/history">View History</a>
+</body>
+</html>
