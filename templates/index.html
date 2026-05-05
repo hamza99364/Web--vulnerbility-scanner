@@ -12,10 +12,20 @@
     {% endif %}
 
     <form method="POST" action="/scan">
+
         <label>Target URL:</label><br>
-        <input type="text" name="url" placeholder="http://example.com" size="50"><br><br>
+        <input type="text" name="url"
+            placeholder="http://127.0.0.1:42001/vulnerabilities/sqli/?id=1&Submit=Submit"
+            size="70"><br><br>
+
+        <label>PHPSESSID Cookie (for authenticated pages):</label><br>
+        <input type="text" name="phpsessid"
+            placeholder="paste your PHPSESSID here"
+            size="50"><br><br>
+
         <input type="checkbox" name="disclaimer">
         I confirm I have permission to scan this target.<br><br>
+
         <input type="submit" value="Start Scan">
     </form>
 

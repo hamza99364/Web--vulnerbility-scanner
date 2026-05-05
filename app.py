@@ -15,26 +15,39 @@ def home():
 def scan():
     url = request.form.get('url', '').strip()
     disclaimer = request.form.get('disclaimer')
+    phpsessid = request.form.get('phpsessid', '').strip()
 
     # Check disclaimer was accepted
     if not disclaimer:
-        return render_template('index.html', error='You must accept the disclaimer.')
+        return render_template('index.html',
+            error='You must accept the disclaimer.')
 
-    # Validate URL format
+    # Validate URL
     if not url.startswith('http://') and not url.startswith('https://'):
-        return render_template('index.html', error='Invalid URL. Must start with http:// or https://')
+        return render_template('index.html',
+            error='Invalid URL. Must start with http:// or https://')
+
+    # Build cookies if provided
+    cookies = None
+    if phpsessid:
+        cookies = {
+            'PHPSESSID': phpsessid,
+            'security': 'low'
+        }
 
     # Run all three scanner modules
     results = []
-    results += sqli.detect_sqli(url)
-    results += xss.detect_xss(url)
-    results += headers.check_headers(url)
+    results += sqli.detect_sqli(url, cookies=cookies)
+    results += xss.detect_xss(url, cookies=cookies)
+    results += headers.check_headers(url, cookies=cookies)
 
-    # Save scan to database
+    # Save to database
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO scans (target_url, total_issues) VALUES (?, ?)',
-                   (url, len(results)))
+    cursor.execute(
+        'INSERT INTO scans (target_url, total_issues) VALUES (?, ?)',
+        (url, len(results))
+    )
     scan_id = cursor.lastrowid
 
     for r in results:
@@ -46,7 +59,8 @@ def scan():
     conn.commit()
     conn.close()
 
-    return render_template('results.html', url=url, results=results, count=len(results))
+    return render_template('results.html',
+        url=url, results=results, count=len(results))
 
 # ── Route 3: Scan History ────────────────────────────────────────
 @app.route('/history')
@@ -61,3 +75,4 @@ def history():
 # ── Run the App ──────────────────────────────────────────────────
 if __name__ == '__main__':
     app.run(debug=True)
+    
