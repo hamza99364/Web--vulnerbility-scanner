@@ -1,33 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Scan History</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scan History — WebShield</title>
+  <link rel="stylesheet" href="../static/style.css">
 </head>
 <body>
-    <h1>Scan History</h1>
 
-    {% if scans %}
-        <table border="1" cellpadding="8">
-            <tr>
-                <th>ID</th>
-                <th>Target URL</th>
-                <th>Date</th>
-                <th>Issues Found</th>
-            </tr>
-            {% for scan in scans %}
-            <tr>
-                <td>{{ scan[0] }}</td>
-                <td>{{ scan[1] }}</td>
-                <td>{{ scan[2] }}</td>
-                <td>{{ scan[3] }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p>No scans yet.</p>
-    {% endif %}
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-logo" href="index.html">
+    <div class="shield">🛡️</div>
+    WebShield
+  </a>
+  <div class="nav-links">
+    <a href="index.html"   class="nav-btn">⬡ Scanner</a>
+    <a href="results.html" class="nav-btn">⬡ Results</a>
+    <a href="history.html" class="nav-btn active">⬡ History <span class="nav-badge" id="histBadge">0</span></a>
+  </div>
+</nav>
 
-    <br>
-    <a href="/">Back to Scanner</a>
+<!-- ── MAIN ── -->
+<div class="container">
+
+  <!-- PAGE HEADING -->
+  <div class="page-heading">
+    <div>
+      <h2>Scan History</h2>
+      <p>All previous scan records</p>
+    </div>
+    <button class="btn-secondary" id="clearBtn">🗑 Clear History</button>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="search-wrap">
+    <div class="search-icon">🔍</div>
+    <input class="search-input" id="historySearch"
+           type="text" placeholder="Search by URL or date…">
+  </div>
+
+  <!-- HISTORY LIST -->
+  <div id="historyList">
+    <!-- populated by script.js -->
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="actions-row">
+    <a href="index.html" class="btn-secondary">← Back to Scanner</a>
+  </div>
+
+  <div class="footer-note" style="margin-top:40px">
+    History stored in session · WebShield v1.0
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="../static/script.js"></script>
 </body>
 </html>
