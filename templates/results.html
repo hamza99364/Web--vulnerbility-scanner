@@ -1,34 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Scan Results</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scan Results — WebShield</title>
+  <link rel="stylesheet" href="../static/style.css">
 </head>
-<body>
-    <h1>Scan Results</h1>
-    <p>Target: {{ url }}</p>
-    <p>Total Issues Found: {{ count }}</p>
+<body onload="initResultsPage()"> <!-- FIX 1: Added onload to trigger the script -->
 
-    {% if results %}
-        <table border="1" cellpadding="8">
-            <tr>
-                <th>Type</th>
-                <th>Severity</th>
-                <th>Description</th>
-            </tr>
-            {% for r in results %}
-            <tr>
-                <td>{{ r.type }}</td>
-                <td>{{ r.severity }}</td>
-                <td>{{ r.description }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p style="color:green;">No vulnerabilities found!</p>
-    {% endif %}
+<nav>
+  <a class="nav-logo" href="index.html" style="text-decoration:none; color:inherit;">
+    <div class="shield">🛡️</div>
+    WebShield
+  </a>
+  <div class="nav-links">
+    <a href="index.html"   class="nav-btn">⬡ Scanner</a>
+    <a href="results.html" class="nav-btn active">⬡ Results</a>
+    <a href="history.html" class="nav-btn">⬡ History <span class="nav-badge" id="histBadge">0</span></a>
+  </div>
+</nav>
 
-    <br>
-    <a href="/">Scan Another URL</a> |
-    <a href="/history">View History</a>
+<div class="container">
+  <div class="page-heading" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+    <div>
+      <h2 style="font-size:28px; font-weight:800;">Scan Results</h2>
+      <p style="color:var(--muted)">Vulnerability assessment report</p>
+    </div>
+    <button class="btn-secondary" onclick="window.print()">🖨 Print Report</button>
+  </div>
+
+  <div class="target-banner">
+    <div>
+      <div class="field-label" style="margin-bottom:4px">Scanned Target</div>
+      <div class="target-url" id="resultUrl" style="font-weight:700; color:var(--accent)">Loading...</div>
+    </div>
+    <div style="text-align:right">
+      <div class="target-meta" id="resultTime">—</div>
+      <div class="target-meta">Scan ID #<span id="resultId">—</span></div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-val" style="color:var(--high)"   id="statHigh">0</div>
+      <div class="stat-label">High Severity</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" style="color:var(--medium)" id="statMedium">0</div>
+      <div class="stat-label">Medium Severity</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" style="color:var(--low)"    id="statLow">0</div>
+      <div class="stat-label">Low / Info</div>
+    </div>
+  </div>
+
+  <div class="results-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+    <div class="results-title" style="font-weight:700;">Vulnerabilities Detected</div>
+    <div class="filter-chips">
+      <!-- FIX 2: Added onclick="filterResults(...)" to all chips -->
+      <button class="chip active" onclick="filterResults('all', this)">All</button>
+      <button class="chip" onclick="filterResults('High', this)">🔴 High</button>
+      <button class="chip" onclick="filterResults('Medium', this)">🟠 Medium</button>
+      <button class="chip" onclick="filterResults('Low', this)">🟡 Low</button>
+    </div>
+  </div>
+
+  <div class="results-table-wrap" id="resultsTable">
+    <!-- This will be filled by script.js -->
+    <p style="padding:40px; text-align:center; color:var(--muted)">No data found. Please run a scan first.</p>
+  </div>
+
+  <div class="actions-row" style="margin-top:30px; display:flex; gap:15px;">
+    <a href="index.html" class="btn-secondary" style="text-decoration:none;">← New Scan</a>
+    <a href="history.html" class="btn-secondary" style="text-decoration:none;">📋 View History</a>
+    <!-- FIX 3: Added id for export functionality -->
+    <button class="btn-secondary" onclick="exportToCSV()">⬇ Export CSV</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Include the logic script -->
+<script src="../static/script.js"></script>
+
 </body>
 </html>
