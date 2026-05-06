@@ -119,5 +119,32 @@
 <div class="toast" id="toast"></div>
 
 <script src="../static/script.js"></script>
+    <h1>Web Application Vulnerability Scanner</h1>
+    <p>Enter a URL to scan for vulnerabilities.</p>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" action="/scan">
+
+        <label>Target URL:</label><br>
+        <input type="text" name="url"
+            placeholder="http://127.0.0.1:42001/vulnerabilities/sqli/?id=1&Submit=Submit"
+            size="70"><br><br>
+
+        <label>PHPSESSID Cookie (for authenticated pages):</label><br>
+        <input type="text" name="phpsessid"
+            placeholder="paste your PHPSESSID here"
+            size="50"><br><br>
+
+        <input type="checkbox" name="disclaimer">
+        I confirm I have permission to scan this target.<br><br>
+
+        <input type="submit" value="Start Scan">
+    </form>
+
+    <br>
+    <a href="/history">View Scan History</a>
 </body>
 </html>
